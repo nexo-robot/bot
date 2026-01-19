@@ -22,11 +22,13 @@ def main():
                 v.setClient(robot)
                 while robot.conn.is_alive():
                     try :
-                        var = int(input("1.Capture"))
+                        var = int(input("1.Capture\n0.Quitter\n# "))
 
                         match var :
                             case 1 :
                                 save_image(v)
+                            case 0 :
+                                boucle = 0
 
                     except :
                         print("Valeur invalider")
