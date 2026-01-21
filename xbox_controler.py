@@ -71,3 +71,9 @@ class xbox_controller:
         if 0 <= axis_index < self.num_axes:
             return self._apply_deadzone(self.joystick.get_axis(axis_index))
         return 0.0
+
+    def quit(self):
+        """
+        Ferme proprement pygame
+        """
+        pygame.quit()
