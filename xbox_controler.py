@@ -63,3 +63,11 @@ class xbox_controller:
                 self.prev_buttons[i] = state
 
         return events
+
+    def get_axis(self, axis_index):
+        """
+        Retourne la valeur actuelle d'un axe avec la deadzone appliquée
+        """
+        if 0 <= axis_index < self.num_axes:
+            return self._apply_deadzone(self.joystick.get_axis(axis_index))
+        return 0.0

@@ -56,6 +56,21 @@ class bot:
 
         return self.__fluxCamera
 
+    def drive_wheels(self, lwheel_speed: float, rwheel_speed: float):
+        """
+        Commande directe des roues sans blocage ni thread.
+        Idéal pour le contrôle joystick continu.
+        """
+        if not self.connected or not self.__cozmo:
+            return False
+        
+        try:
+            self.__cozmo.drive_wheels(lwheel_speed=lwheel_speed, rwheel_speed=rwheel_speed)
+            return True
+        except Exception as e:
+            print(f"Erreur drive_wheels : {e}")
+            return False
+
     def __moveEngine(self, lspeed: float, rspeed: float, duration: float):
         """
         Gère le mouvement en 3 étapes : Start -> Sleep -> Stop
@@ -94,8 +109,7 @@ class bot:
         else :
             if speed <= 100:
                 try :
-                    theard = th(target=self.__moveEngine,args=(speed,speed,duration,))
-                    theard.start()
+                    self.__moveEngine(speed,speed,duration)
                     return True
                 except Exception as e:
                     print("Erreur :", e)
@@ -109,8 +123,7 @@ class bot:
         else:
             if speed <= 100:
                 try:
-                    theard = th(target=self.__moveEngine,args=(-speed,-speed,duration,))
-                    theard.start()
+                    self.__moveEngine(-speed,-speed,duration)
                     return True
                 except Exception as e:
                     print("Erreur :", e)
@@ -124,8 +137,7 @@ class bot:
         else:
             if speed <= 100:
                 try:
-                    theard = th(target=self.__moveEngine,args=(-speed,speed,duration,))
-                    theard.start()
+                    self.__moveEngine(-speed,speed,duration)
                     return True
                 except Exception as e:
                     print("Erreur :", e)
@@ -139,8 +151,7 @@ class bot:
         else:
             if speed <= 100:
                 try:
-                    theard = th(target=self.__moveEngine,args=(speed,-speed,duration,))
-                    theard.start()
+                    self.__moveEngine(speed,-speed,duration)
                     return True
                 except Exception as e:
                     print("Erreur :", e)
