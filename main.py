@@ -19,18 +19,15 @@ def gestion_input_xbox(v, controller):
     buttons = controller.get_button_events()
     
     should_quit = False
-
-    # Gestion des boutons
     for event, button_id in buttons:
         # print(f"Event: {event}, Button ID: {button_id}")
         if event == "pressed":
             match (button_id):
-                case 6 : # Bouton Back/Select souvent utilisé pour quitter ou options
+                case 6 :
                     save_image(v)
-                case 7 : # Bouton Start souvent utilisé pour quitter
+                case 7 :
                     should_quit = True
 
-    # Gestion du joystick gauche pour le déplacement
     left_x = controller.get_axis(0)
     left_y = controller.get_axis(1)
     
@@ -84,8 +81,6 @@ def main():
                 with pycozmo.connect() as robot:
                     print("Robot connecté.")
                     v.setClient(robot)
-                    
-                    # Boucle principale de contrôle
                     while robot.conn.is_alive() and running:
                        controler.update()
 
@@ -97,9 +92,7 @@ def main():
                                break
 
                        time.sleep(0.02)
-                    
-                # Sortie du context manager : la connexion est fermée physiquement
-                # On met à jour l'état de l'objet bot
+
                 v.disconnect_flag()
                 print("Déconnexion du robot effectuée.")
 
@@ -109,11 +102,8 @@ def main():
             except Exception as e:
                 print(f"Erreur ou perte de connexion : {e}")
                 v.disconnect_flag() # On s'assure que le flag est reset en cas d'erreur
-                # On attend un peu avant de retenter la connexion si on ne quitte pas
                 if running:
                     time.sleep(2)
-
-        # Nettoyage final
         if controler:
             controler.quit()
         print("Programme terminé.")
